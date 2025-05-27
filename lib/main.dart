@@ -1,3 +1,4 @@
+import 'package:examenp1/views/agregar_cliente_view.dart';
 import 'package:examenp1/views/resumen_cliente_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: WelcomePage(),
       routes: {
-        '/welcome': (context) => WelcomePage()
+        '/welcome': (context) => WelcomePage(),
+        '/agregar_cliente': (context)=>AgregarClienteView()
       }
     );
   }

@@ -18,6 +18,7 @@ class ResumenClienteView extends StatelessWidget {
       ),
       child: Column(
         children: [
+          SizedBox(height: 60,),
           Text(cliente.nombre, style: Theme.of(context).textTheme.titleLarge),
           _buildAnimatedValue("Saldo Actual", cliente.saldoActual),
           _buildAnimatedValue("Pago Mínimo", cliente.pagoMinimo),
@@ -35,10 +36,33 @@ class ResumenClienteView extends StatelessWidget {
   }
 
   Widget _buildAnimatedValue(String label, double value) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: value),
-      duration: const Duration(seconds: 1),
-      builder: (_, val, __) => Text("$label: \$${val.toStringAsFixed(2)}"),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label + ':',
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0, end: value),
+            duration: const Duration(seconds: 1),
+            builder: (_, val, __) => Text(
+              "\$${val.toStringAsFixed(2)}",
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

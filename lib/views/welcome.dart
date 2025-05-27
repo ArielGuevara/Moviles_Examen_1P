@@ -3,9 +3,24 @@ import 'package:examenp1/model/cliente_model.dart';
 import 'package:examenp1/views/resumen_cliente_view.dart';
 import 'package:provider/provider.dart';
 import 'package:examenp1/controller/bancoController.dart';
+import 'package:flutter/src/rendering/box.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _WelcomePageBody();
+  }
+}
+
+class _WelcomePageBody extends StatefulWidget {
+  @override
+  State<_WelcomePageBody> createState() => _WelcomePageBodyState();
+}
+
+class _WelcomePageBodyState extends State<_WelcomePageBody> {
+  String _resultadoIntereses = '';
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +43,29 @@ class WelcomePage extends StatelessWidget {
               // Input para buscar cliente por ID
               _BuscarClientePorId(),
               const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _resultadoIntereses = bancoController.verSaldoPorIntereses();
+                  });
+                },
+                child: const Text('Ver total de intereses acumulados'),
+              ),
+              const SizedBox(height: 10),
+              Text(_resultadoIntereses, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
               const Text('Lista de clientes:', style: TextStyle(fontSize: 18)),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.person_add),
+                  label: const Text('Agregar cliente'),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/agregar_cliente');
+                  },
+                ),
+              ),
               const SizedBox(height: 10),
               Expanded(
                 child: ListView.builder(
@@ -38,7 +75,15 @@ class WelcomePage extends StatelessWidget {
                     return Card(
                       child: ListTile(
                         title: Text(cliente.nombre),
-                        subtitle: Text('ID: ${cliente.id}'),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('ID: ${cliente.id}'),
+                            Text('Saldo actual: \$${cliente.saldoActual.toStringAsFixed(2)}'),
+                            Text('Compras realizadas: \$${cliente.comprasRealizadas.toStringAsFixed(2)}'),
+                            Text('Pago depositado: \$${cliente.pagoDepositado.toStringAsFixed(2)}'),
+                          ],
+                        ),
                         trailing: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
@@ -50,6 +95,7 @@ class WelcomePage extends StatelessWidget {
                           },
                           child: const Text('Ver Detalle'),
                         ),
+
                       ),
                     );
                   },

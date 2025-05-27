@@ -19,6 +19,18 @@ class BancoController extends ChangeNotifier{
     _clientes = clientes;
     notifyListeners();
   }
+  void agregarCliente(ClienteModel cliente) {
+    _clientes.add(cliente);
+    notifyListeners();
+  }
+  String verSaldoPorIntereses(){
+    double total=0.0;
+    String respuesta='';
+   for(var cliente in _clientes){
+    total += cliente.interesesAcumulados;
+   }
+   return respuesta='Total de intereses ganados por morosos: \$${total.toStringAsFixed(2)}';
+  }
   void actualizarPago(String clienteId, double nuevoPago) {
     final cliente = _clientes.firstWhere((c) => c.id == clienteId);
     cliente.pagoDepositado = nuevoPago;
