@@ -28,80 +28,125 @@ class _WelcomePageBodyState extends State<_WelcomePageBody> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bienvenido'),
+        backgroundColor: Colors.deepPurple,
+        elevation: 2,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Banco bandido Peluche',
-                style: TextStyle(fontSize: 24),
-              ),
-              const SizedBox(height: 20),
-              // Input para buscar cliente por ID
-              _BuscarClientePorId(),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _resultadoIntereses = bancoController.verSaldoPorIntereses();
-                  });
-                },
-                child: const Text('Ver total de intereses acumulados'),
-              ),
-              const SizedBox(height: 10),
-              Text(_resultadoIntereses, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10),
-              const Text('Lista de clientes:', style: TextStyle(fontSize: 18)),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.person_add),
-                  label: const Text('Agregar cliente'),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple.shade50, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Banco bandido Peluche',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.deepPurple),
+                ),
+                const SizedBox(height: 20),
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: _BuscarClientePorId(),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  icon: const Icon(Icons.monetization_on, color: Colors.white),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/agregar_cliente');
+                    setState(() {
+                      _resultadoIntereses = bancoController.verSaldoPorIntereses();
+                    });
                   },
+                  label: const Text('Ver total de intereses acumulados', style: TextStyle(color: Colors.black)),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: bancoController.clientes.length,
-                  itemBuilder: (context, index) {
-                    final cliente = bancoController.clientes[index];
-                    return Card(
-                      child: ListTile(
-                        title: Text(cliente.nombre),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('ID: ${cliente.id}'),
-                            Text('Saldo actual: \$${cliente.saldoActual.toStringAsFixed(2)}'),
-                            Text('Compras realizadas: \$${cliente.comprasRealizadas.toStringAsFixed(2)}'),
-                            Text('Pago depositado: \$${cliente.pagoDepositado.toStringAsFixed(2)}'),
-                          ],
-                        ),
-                        trailing: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ResumenClienteView(cliente: cliente),
-                              ),
-                            );
-                          },
-                          child: const Text('Ver Detalle'),
-                        ),
-
+                const SizedBox(height: 10),
+                if (_resultadoIntereses.isNotEmpty)
+                  Card(
+                    color: Colors.deepPurple.shade50,
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(_resultadoIntereses, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
+                    ),
+                  ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Lista de clientes:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.deepPurple)),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.person_add, color: Colors.white),
+                      label: const Text('Agregar', style: TextStyle(color: Colors.black)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
-                    );
-                  },
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/agregar_cliente');
+                      },
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 10),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: bancoController.clientes.length,
+                    itemBuilder: (context, index) {
+                      final cliente = bancoController.clientes[index];
+                      return Card(
+                        elevation: 2,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.deepPurple.shade100,
+                            child: Text(cliente.nombre[0], style: const TextStyle(color: Colors.deepPurple)),
+                          ),
+                          title: Text(cliente.nombre, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('ID: ${cliente.id}'),
+                              Text('Saldo actual: \$${cliente.saldoActual.toStringAsFixed(2)}'),
+                              Text('Compras realizadas: \$${cliente.comprasRealizadas.toStringAsFixed(2)}'),
+                              Text('Pago depositado: \$${cliente.pagoDepositado.toStringAsFixed(2)}'),
+                            ],
+                          ),
+                          trailing: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.deepPurple,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ResumenClienteView(cliente: cliente),
+                                ),
+                              );
+                            },
+                            child: const Text('Ver Detalle', style: TextStyle(color: Colors.black)),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

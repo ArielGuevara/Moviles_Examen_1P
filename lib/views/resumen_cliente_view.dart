@@ -8,29 +8,47 @@ class ResumenClienteView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(seconds: 2),
-      curve: Curves.easeInOut,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.blue[50],
-        borderRadius: BorderRadius.circular(12),
+    return Scaffold(
+      backgroundColor: Colors.deepPurple.shade50,
+      appBar: AppBar(
+        title: Text(cliente.nombre),
+        backgroundColor: Colors.deepPurple,
+        elevation: 2,
       ),
-      child: Column(
-        children: [
-          SizedBox(height: 60,),
-          Text(cliente.nombre, style: Theme.of(context).textTheme.titleLarge),
-          _buildAnimatedValue("Saldo Actual", cliente.saldoActual),
-          _buildAnimatedValue("Pago Mínimo", cliente.pagoMinimo),
-          _buildAnimatedValue("Pago Sin Intereses", cliente.pagoSinIntereses),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.popUntil(context, (route) => route.isFirst);
-            },
-            child: const Text('Volver a inicio'),
+      body: Center(
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.account_circle, size: 60, color: Colors.white),
+                const SizedBox(height: 10),
+                Text(cliente.nombre, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
+                const SizedBox(height: 20),
+                _buildAnimatedValue("Saldo Actual", cliente.saldoActual),
+                _buildAnimatedValue("Pago Mínimo", cliente.pagoMinimo),
+                _buildAnimatedValue("Pago Sin Intereses", cliente.pagoSinIntereses),
+                const SizedBox(height: 30),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    minimumSize: const Size.fromHeight(45),
+                  ),
+                  icon: const Icon(Icons.home, color: Colors.white),
+                  onPressed: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                  },
+                  label: const Text('Volver a inicio'),
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -66,4 +84,3 @@ class ResumenClienteView extends StatelessWidget {
     );
   }
 }
-

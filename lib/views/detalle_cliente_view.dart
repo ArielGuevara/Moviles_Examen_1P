@@ -15,7 +15,7 @@ class DetalleClienteView extends StatelessWidget {
         appBar: AppBar(
           title: Text(cliente.nombre),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.popUntil(context, (route) => route.isFirst);
             },
@@ -31,4 +31,3 @@ class DetalleClienteView extends StatelessWidget {
     );
   }
 }
-
